@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_REGISTRY = 'docker.io/tu-usuario-dockerhub'
+        DOCKER_REGISTRY = 'docker.io/mauel'
         KUBERNETES_NAMESPACE = 'ecommerce'
         SERVICE_NAME = 'user-service'
     }
