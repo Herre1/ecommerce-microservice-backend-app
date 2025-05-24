@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+    
+    environment {
+        SERVICE_NAME = 'service-discovery'
+        IMAGE_NAME = "selimhorri/${SERVICE_NAME}-ecommerce-boot"
+        IMAGE_TAG = '0.1.0'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out code...'
+                checkout scm
+            }
+        }
+        
+        stage('Verify Environment') {
+            steps {
+                echo 'Checking environment...'
+                sh 'pwd'
+                sh 'ls -la'
+                sh 'java -version || echo "Java not found"'
+                sh 'mvn -version || echo "Maven not found"'
+                sh 'docker --version || echo "Docker not found"'
+            }
+        }
+        
+        stage('List Service Directory') {
+            steps {
+                echo "Listing ${SERVICE_NAME} directory..."
+                dir('service-discovery') {
+                    sh 'pwd'
+                    sh 'ls -la'
+                    sh 'ls -la src/ || echo "No src directory"'
+                }
+            }
+        }
+        
+        stage('Test File Access') {
+            steps {
+                echo 'Testing file access...'
+                dir('service-discovery') {
+                    sh 'test -f pom.xml && echo "pom.xml found" || echo "pom.xml not found"'
+                    sh 'test -f Dockerfile && echo "Dockerfile found" || echo "Dockerfile not found"'
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+} 

@@ -1,0 +1,32 @@
+FROM jenkins/jenkins:lts
+
+# Switch to root user to install packages
+USER root
+
+# Install Maven, Java 11, and other tools
+RUN apt-get update && \
+    apt-get install -y \
+    maven \
+    openjdk-11-jdk \
+    docker.io \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set JAVA_HOME
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+# Switch back to jenkins user
+USER jenkins
+
+# Skip the initial setup wizard
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+
+# Install recommended plugins
+RUN jenkins-plugin-cli --plugins \
+    git \
+    workflow-aggregator \
+    docker-workflow \
+    pipeline-stage-view \
+    build-timeout \
+    credentials-binding 
