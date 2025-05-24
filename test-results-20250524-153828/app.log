@@ -1,0 +1,111 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.5.7)
+
+2025-05-24 15:39:59.727  INFO [USER-SERVICE,,] 5056 --- [           main] c.selimhorri.app.UserServiceApplication  : Starting UserServiceApplication v0.1.0 using Java 11.0.27 on NITRO-DE-HERRERA with PID 5056 (C:\Users\ALEJANDRO\Desktop\ecommerce-microservice-backend-app-Manuel\user-service\target\user-service-v0.1.0.jar started by ALEJANDRO in C:\Users\ALEJANDRO\Desktop\ecommerce-microservice-backend-app-Manuel\user-service)
+2025-05-24 15:39:59.734  INFO [USER-SERVICE,,] 5056 --- [           main] c.selimhorri.app.UserServiceApplication  : The following profiles are active: test
+2025-05-24 15:39:59.848  INFO [USER-SERVICE,,] 5056 --- [           main] o.s.b.context.config.ConfigDataLoader    : Fetching config from server at : http://localhost:9296
+2025-05-24 15:39:59.848  INFO [USER-SERVICE,,] 5056 --- [           main] o.s.b.context.config.ConfigDataLoader    : Connect Timeout Exception on Url - http://localhost:9296. Will be trying the next url if available
+2025-05-24 15:39:59.848  WARN [USER-SERVICE,,] 5056 --- [           main] o.s.b.context.config.ConfigDataLoader    : Could not locate PropertySource ([ConfigServerConfigDataResource@7dc19a70 uris = array<String>['http://localhost:9296'], optional = true, profiles = list['test']]): I/O error on GET request for "http://localhost:9296/USER-SERVICE/test": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2025-05-24 15:40:03.188  INFO [USER-SERVICE,,] 5056 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-24 15:40:03.813  INFO [USER-SERVICE,,] 5056 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 608 ms. Found 4 JPA repository interfaces.
+2025-05-24 15:40:04.913  INFO [USER-SERVICE,,] 5056 --- [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=2c574e81-756b-3e01-8aef-3701e70feec1
+2025-05-24 15:40:09.428  INFO [USER-SERVICE,,] 5056 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2025-05-24 15:40:09.456  INFO [USER-SERVICE,,] 5056 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-24 15:40:09.457  INFO [USER-SERVICE,,] 5056 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.55]
+2025-05-24 15:40:09.607  INFO [USER-SERVICE,,] 5056 --- [           main] o.a.c.c.C.[.[localhost].[/user-service]  : Initializing Spring embedded WebApplicationContext
+2025-05-24 15:40:09.607  INFO [USER-SERVICE,,] 5056 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 9757 ms
+2025-05-24 15:40:11.959  WARN [USER-SERVICE,,] 5056 --- [           main] o.s.c.s.a.z.ZipkinAutoConfiguration      : Check result of the [RestTemplateSender{http://localhost:9411/api/v2/spans}] contains an error [CheckResult{ok=false, error=org.springframework.web.client.ResourceAccessException: I/O error on POST request for "http://localhost:9411/api/v2/spans": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect}]
+2025-05-24 15:40:17.005  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 7.7.3 by Redgate
+2025-05-24 15:40:17.023  INFO [USER-SERVICE,,] 5056 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-24 15:40:18.171  INFO [USER-SERVICE,,] 5056 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-24 15:40:18.272  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.database.base.DatabaseType       : Database: jdbc:h2:mem:fa7bdabb-3ef2-4a4b-b4b8-671d1a2d1c0a (H2 1.4)
+2025-05-24 15:40:18.502  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.111s)
+2025-05-24 15:40:18.545  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2025-05-24 15:40:18.619  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 0 rows affected
+2025-05-24 15:40:18.626  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 0 rows affected
+2025-05-24 15:40:18.663  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "PUBLIC": << Empty Schema >>
+2025-05-24 15:40:18.670  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "1 - create users table"
+2025-05-24 15:40:18.700  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 0 rows affected
+2025-05-24 15:40:18.753  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "2 - insert users table"
+2025-05-24 15:40:18.754  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 4 rows affected
+2025-05-24 15:40:18.787  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "3 - create address table"
+2025-05-24 15:40:18.789  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 0 rows affected
+2025-05-24 15:40:18.820  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "4 - insert address table"
+2025-05-24 15:40:18.822  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 6 rows affected
+2025-05-24 15:40:18.864  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "5 - create credentials table"
+2025-05-24 15:40:18.867  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 0 rows affected
+2025-05-24 15:40:18.902  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "6 - insert credentials table"
+2025-05-24 15:40:18.904  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 4 rows affected
+2025-05-24 15:40:18.941  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "7 - create verification tokens table"
+2025-05-24 15:40:18.944  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 0 rows affected
+2025-05-24 15:40:18.970  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "8 - insert verification tokens table"
+2025-05-24 15:40:18.972  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 4 rows affected
+2025-05-24 15:40:19.007  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "9 - create address user id fk"
+2025-05-24 15:40:19.014  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 0 rows affected
+2025-05-24 15:40:19.048  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "10 - create credentials user id fk"
+2025-05-24 15:40:19.052  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 0 rows affected
+2025-05-24 15:40:19.081  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "PUBLIC" to version "11 - create verification tokens credential id fk"
+2025-05-24 15:40:19.084  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : 0 rows affected
+2025-05-24 15:40:19.111  INFO [USER-SERVICE,,] 5056 --- [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 11 migrations to schema "PUBLIC", now at version v11 (execution time 00:00.466s)
+2025-05-24 15:40:19.535  INFO [USER-SERVICE,,] 5056 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-24 15:40:19.725  INFO [USER-SERVICE,,] 5056 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
+2025-05-24 15:40:20.205  INFO [USER-SERVICE,,] 5056 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2025-05-24 15:40:20.601  INFO [USER-SERVICE,,] 5056 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2025-05-24 15:40:21.904  INFO [USER-SERVICE,,] 5056 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2025-05-24 15:40:21.918  INFO [USER-SERVICE,,] 5056 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-24 15:40:24.965  WARN [USER-SERVICE,,] 5056 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-24 15:40:31.353  WARN [USER-SERVICE,,] 5056 --- [           main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2025-05-24 15:40:36.535  INFO [USER-SERVICE,,] 5056 --- [           main] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2025-05-24 15:40:38.569  WARN [USER-SERVICE,,] 5056 --- [           main] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-05-24 15:40:38.811  INFO [USER-SERVICE,,] 5056 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-05-24 15:40:38.950  INFO [USER-SERVICE,,] 5056 --- [           main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2025-05-24 15:40:39.128  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2025-05-24 15:40:39.139  INFO [USER-SERVICE,,] 5056 --- [           main] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-05-24 15:40:39.192  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-05-24 15:40:39.192  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-05-24 15:40:39.192  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-05-24 15:40:39.192  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-05-24 15:40:39.193  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-05-24 15:40:39.193  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2025-05-24 15:40:39.193  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-05-24 15:40:40.186  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-05-24 15:40:40.191  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2025-05-24 15:40:40.209  INFO [USER-SERVICE,,] 5056 --- [           main] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2025-05-24 15:40:40.221  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1748119240219 with initial instances count: 0
+2025-05-24 15:40:40.249  INFO [USER-SERVICE,,] 5056 --- [           main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application USER-SERVICE with eureka with status UP
+2025-05-24 15:40:40.250  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1748119240250, current=UP, previous=STARTING]
+2025-05-24 15:40:40.254  INFO [USER-SERVICE,,] 5056 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/NITRO-DE-HERRERA:USER-SERVICE:8080: registering service...
+2025-05-24 15:40:40.272  WARN [USER-SERVICE,,] 5056 --- [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is org.springframework.boot.web.server.PortInUseException: Port 8080 is already in use
+2025-05-24 15:40:40.286  INFO [USER-SERVICE,,] 5056 --- [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-24 15:40:40.294  INFO [USER-SERVICE,,] 5056 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-24 15:40:40.303  INFO [USER-SERVICE,,] 5056 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-24 15:40:40.508  INFO [USER-SERVICE,,] 5056 --- [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/NITRO-DE-HERRERA:USER-SERVICE:8080 - registration status: 204
+2025-05-24 15:40:41.306  WARN [USER-SERVICE,,] 5056 --- [           main] z.r.AsyncReporter$BoundedAsyncReporter   : Timed out waiting for in-flight spans to send
+2025-05-24 15:40:41.312  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2025-05-24 15:40:44.314  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2025-05-24 15:40:44.324  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/NITRO-DE-HERRERA:USER-SERVICE:8080 - deregister  status: 200
+2025-05-24 15:40:44.330  INFO [USER-SERVICE,,] 5056 --- [           main] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+2025-05-24 15:40:44.333  INFO [USER-SERVICE,,] 5056 --- [           main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-05-24 15:40:44.368  INFO [USER-SERVICE,,] 5056 --- [           main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-05-24 15:40:44.404 ERROR [USER-SERVICE,,] 5056 --- [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+

@@ -1,0 +1,36 @@
+===============================================
+🧪 REPORTE COMPRENSIVO DE PRUEBAS
+Sistema de E-commerce - Taller 2
+===============================================
+
+Fecha: Sat, May 24, 2025  3:27:41 PM
+Servicio: user-service
+
+📊 RESUMEN DE RESULTADOS:
+===============================================
+
+✅ PRUEBAS COMPLETADAS:
+• Pruebas Unitarias: EJECUTADAS
+• Pruebas de Integración: EJECUTADAS  
+• Pruebas E2E: EJECUTADAS
+• Pruebas de Estrés: EJECUTADAS
+• Pruebas de Rendimiento: EJECUTADAS
+
+📁 UBICACIÓN DE RESULTADOS:
+• Directorio principal: test-results-20250524-152442/
+• Pruebas unitarias: test-results-20250524-152442/unit-tests/
+• Pruebas integración: test-results-20250524-152442/integration-tests/
+• Pruebas E2E: test-results-20250524-152442/e2e-tests/
+• Pruebas estrés: test-results-20250524-152442/stress-tests/
+• Logs de servicios: test-results-20250524-152442/app.log, discovery.log
+
+📈 MÉTRICAS DE RENDIMIENTO:
+
+🔗 REPORTES HTML:
+• Prueba de Estrés: test-results-20250524-152442/stress-tests/stress-test-report.html
+• Prueba de Picos: test-results-20250524-152442/stress-tests/spike-test-report.html
+• Prueba de Carga: test-results-20250524-152442/stress-tests/load-test-report.html
+
+===============================================
+🎉 TESTING COMPRENSIVO COMPLETADO
+===============================================
