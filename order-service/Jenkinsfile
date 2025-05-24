@@ -1,0 +1,83 @@
+pipeline {
+    agent any
+    
+    environment {
+        MAVEN_OPTS = '-Dmaven.repo.local=.m2/repository'
+        SERVICE_NAME = 'order-service'
+        IMAGE_NAME = "selimhorri/${SERVICE_NAME}-ecommerce-boot"
+        IMAGE_TAG = '0.1.0'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out code...'
+                checkout scm
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                echo 'Building the service...'
+                dir('order-service') {
+                    sh 'mvn clean compile -DskipTests'
+                }
+            }
+        }
+        
+        stage('Unit Tests') {
+            steps {
+                echo 'Running unit tests...'
+                dir('order-service') {
+                    sh 'mvn test'
+                }
+            }
+            post {
+                always {
+                    publishTestResults testResultsPattern: 'order-service/target/surefire-reports/*.xml'
+                }
+            }
+        }
+        
+        stage('Package') {
+            steps {
+                echo 'Packaging the application...'
+                dir('order-service') {
+                    sh 'mvn package -DskipTests'
+                }
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                dir('order-service') {
+                    script {
+                        def image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                        echo "Docker image built: ${IMAGE_NAME}:${IMAGE_TAG}"
+                    }
+                }
+            }
+        }
+        
+        stage('Archive Artifacts') {
+            steps {
+                echo 'Archiving artifacts...'
+                archiveArtifacts artifacts: 'order-service/target/*.jar', fingerprint: true
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+} 
