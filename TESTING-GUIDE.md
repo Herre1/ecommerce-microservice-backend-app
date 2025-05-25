@@ -458,4 +458,586 @@ Esta implementación de testing proporciona una **base sólida y profesional** p
 
 ---
 
-*📧 Para dudas o mejoras, contactar al equipo de desarrollo.* 
+*📧 Para dudas o mejoras, contactar al equipo de desarrollo.*
+
+---
+
+## 📖 **RECURSOS ADICIONALES**
+
+### 🔗 Enlaces Útiles
+- [Spring Boot Testing Guide](https://spring.io/guides/gs/testing-web/)
+- [Testcontainers Documentation](https://www.testcontainers.org/)
+- [Locust Documentation](https://locust.io/)
+- [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
+
+### 📚 Lecturas Recomendadas
+- "Testing Microservices" - Toby Clemson
+- "Building Microservices" - Sam Newman
+- "Continuous Delivery" - Jez Humble & David Farley
+
+---
+
+# 🏗️ STAGE PIPELINES - PASO 4
+**Despliegue y Validación en Ambiente Staging**
+
+## 📋 **INTRODUCCIÓN AL STAGING**
+
+El **ambiente de staging** es un entorno de pre-producción que replica las condiciones de producción para validar los microservicios antes de su despliegue final.
+
+### 🎯 **Objetivos del Staging Pipeline**
+- ✅ **Validación pre-producción**: Probar en ambiente similar a producción
+- ✅ **Pruebas de integración completas**: Validar comunicación entre servicios
+- ✅ **Gate de aprobación**: Control manual antes de producción
+- ✅ **Automatización de despliegue**: Pipeline consistente y repetible
+
+---
+
+## 🏗️ **ARQUITECTURA DE STAGING**
+
+### 📊 **Flujo del Pipeline Staging**
+
+```mermaid
+graph LR
+    A[Dev Pipeline] --> B[Artifact Collection]
+    B --> C[Staging Build]
+    C --> D[Staging Deploy]
+    D --> E[Service Readiness]
+    E --> F[Staging Tests]
+    F --> G[Metrics Collection]
+    G --> H{Manual Gate}
+    H -->|Approved| I[Production Pipeline]
+    H -->|Rejected| J[Rollback]
+```
+
+### 🌐 **Configuración de Puertos Staging**
+
+| **Servicio** | **Puerto Staging** | **Puerto Desarrollo** |
+|-------------|-------------------|---------------------|
+| Service Discovery | 90061 | 8761 |
+| User Service | 90080 | 8080 |
+| Product Service | 90081 | 8081 |
+| Order Service | 90082 | 8082 |
+| Payment Service | 90083 | 8083 |
+| Shipping Service | 90084 | 8084 |
+
+---
+
+## 🚀 **EJECUCIÓN DE STAGING PIPELINE**
+
+### 📋 **Prerrequisitos**
+```bash
+# Verificar herramientas necesarias
+docker --version
+docker-compose --version
+mvn --version
+java --version
+```
+
+### 🔧 **Ejecución Manual del Pipeline**
+
+#### **1. Despliegue Completo Automatizado**
+```bash
+# Ejecutar pipeline completo de staging
+bash deploy-staging.sh deploy
+
+# Verificar estado después del despliegue
+bash deploy-staging.sh status
+```
+
+#### **2. Ejecución por Etapas**
+```bash
+# Solo construir servicios
+bash deploy-staging.sh build
+
+# Solo ejecutar pruebas
+bash deploy-staging.sh test
+
+# Ver logs de servicios
+bash deploy-staging.sh logs
+
+# Detener servicios
+bash deploy-staging.sh stop
+
+# Limpiar ambiente
+bash deploy-staging.sh clean
+```
+
+### 🏗️ **Ejecución desde Jenkins**
+
+#### **Configurar Job de Staging**
+```groovy
+// Importar configuración de Jenkins
+// En Jenkins: Manage Jenkins > Script Console
+load('/path/to/jenkins-staging-job.groovy')
+```
+
+#### **Ejecutar Pipeline de Staging**
+1. **Acceder a Jenkins**: http://localhost:8080
+2. **Seleccionar Job**: `ecommerce-staging-deployment`
+3. **Configurar Parámetros**:
+   - `DEPLOY_ENVIRONMENT`: staging-auto
+   - `RUN_SMOKE_TESTS`: true
+   - `RUN_INTEGRATION_TESTS`: true
+   - `AUTO_PROMOTE_TO_PROD`: false
+4. **Ejecutar Build**
+
+---
+
+## 🧪 **TIPOS DE PRUEBAS EN STAGING**
+
+### 🚬 **1. Smoke Tests**
+**Propósito**: Verificación básica de que los servicios están ejecutándose
+
+```bash
+# Pruebas automáticas de endpoints básicos
+curl -f http://localhost:90061/actuator/health  # Service Discovery
+curl -f http://localhost:90080/actuator/health  # User Service
+curl -f http://localhost:90081/actuator/health  # Product Service
+curl -f http://localhost:90082/actuator/health  # Order Service
+curl -f http://localhost:90083/actuator/health  # Payment Service
+curl -f http://localhost:90084/actuator/health  # Shipping Service
+```
+
+### 🔗 **2. Integration Tests**
+**Propósito**: Validar comunicación entre microservicios
+
+```bash
+# Test 1: Verificar registro en Service Discovery
+curl -s http://localhost:90061/eureka/apps | grep "user-service"
+
+# Test 2: Crear usuario de prueba
+curl -X POST http://localhost:90080/api/users \
+     -H "Content-Type: application/json" \
+     -d '{
+       "firstName": "Staging",
+       "lastName": "User",
+       "email": "staging@test.com",
+       "phone": "555-0123",
+       "credential": {
+         "username": "staginguser",
+         "password": "password123",
+         "roleBasedAuthority": "ROLE_USER",
+         "isEnabled": true,
+         "isAccountNonExpired": true,
+         "isAccountNonLocked": true,
+         "isCredentialsNonExpired": true
+       }
+     }'
+
+# Test 3: Verificar listado de usuarios
+curl -f http://localhost:90080/api/users
+```
+
+### ⚡ **3. Performance Tests**
+**Propósito**: Validar rendimiento en ambiente staging
+
+```bash
+# Prueba básica de concurrencia
+for i in {1..10}; do
+  curl -s http://localhost:90080/actuator/health > /dev/null &
+done
+wait
+
+# Con Apache Bench (si está disponible)
+ab -n 50 -c 5 http://localhost:90080/actuator/health
+```
+
+---
+
+## 📊 **MONITOREO Y MÉTRICAS**
+
+### 📈 **Endpoints de Métricas Staging**
+
+| **Endpoint** | **Descripción** |
+|-------------|----------------|
+| `/actuator/health` | Estado de salud del servicio |
+| `/actuator/metrics` | Métricas detalladas del servicio |
+| `/actuator/info` | Información del servicio |
+| `/actuator/prometheus` | Métricas en formato Prometheus |
+
+### 📊 **Verificación de Métricas**
+```bash
+# Obtener métricas de User Service
+curl -s http://localhost:90080/actuator/metrics | jq '.'
+
+# Verificar salud de todos los servicios
+for port in 90061 90080 90081 90082 90083 90084; do
+  echo "Puerto $port: $(curl -s http://localhost:$port/actuator/health | jq -r '.status')"
+done
+```
+
+---
+
+## 🔒 **GATE DE APROBACIÓN MANUAL**
+
+### 📋 **Proceso de Aprobación**
+
+El pipeline de staging incluye un **gate de aprobación manual** que:
+
+1. **Presenta resumen** de resultados de staging
+2. **Muestra endpoints** disponibles para validación manual
+3. **Solicita aprobación** para promoción a producción
+4. **Registra decisión** y comentarios del aprobador
+
+### ✅ **Criterios de Aprobación**
+
+- ✅ **Smoke Tests**: Todos pasaron
+- ✅ **Integration Tests**: Comunicación entre servicios OK
+- ✅ **Performance Tests**: Rendimiento aceptable
+- ✅ **Manual Validation**: Validación funcional manual
+- ✅ **Security Check**: No vulnerabilidades críticas
+
+### 📝 **Opciones de Aprobación**
+
+| **Opción** | **Descripción** |
+|-----------|----------------|
+| **Aprobar** | Promoción automática a producción |
+| **Aprobar con observaciones** | Promoción con comentarios |
+| **Rechazar** | Detener pipeline, requiere correcciones |
+
+---
+
+## 🐳 **CONFIGURACIÓN DOCKER STAGING**
+
+### 📄 **Docker Compose Staging**
+
+El ambiente staging utiliza una configuración Docker específica:
+
+```yaml
+# staging-deployment/docker-compose-staging.yml
+version: '3.8'
+
+services:
+  service-discovery-staging:
+    image: selimhorri/service-discovery-ecommerce-boot:0.1.0-staging
+    ports:
+      - "90061:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=staging
+    networks:
+      - ecommerce-staging
+
+  user-service-staging:
+    image: selimhorri/user-service-ecommerce-boot:0.1.0-staging
+    ports:
+      - "90080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=staging
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-discovery-staging:8761/eureka
+    depends_on:
+      - service-discovery-staging
+    networks:
+      - ecommerce-staging
+
+networks:
+  ecommerce-staging:
+    driver: bridge
+    name: ecommerce-staging-network
+```
+
+### 🔧 **Configuración de Aplicación Staging**
+
+```yaml
+# staging-configs/application-staging.yml
+spring:
+  profiles:
+    active: staging
+  datasource:
+    url: jdbc:h2:mem:stagingdb
+    username: staging_user
+    password: staging_pass
+    
+eureka:
+  client:
+    service-url:
+      defaultZone: http://service-discovery-staging:8761/eureka
+
+logging:
+  level:
+    com.selimhorri: INFO
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level [STAGING] %logger{36} - %msg%n"
+
+ecommerce:
+  staging:
+    environment: staging
+    debug-mode: true
+    test-data-enabled: true
+    monitoring-enabled: true
+```
+
+---
+
+## 🔧 **COMANDOS ÚTILES**
+
+### 📊 **Monitoreo**
+```bash
+# Ver estado de contenedores staging
+docker ps --filter "name=staging"
+
+# Ver logs de todos los servicios staging
+docker-compose -f staging-deployment/docker-compose-staging.yml logs
+
+# Ver logs de un servicio específico
+docker logs user-service-staging
+
+# Seguir logs en tiempo real
+docker-compose -f staging-deployment/docker-compose-staging.yml logs -f
+```
+
+### 🧹 **Mantenimiento**
+```bash
+# Reiniciar un servicio específico
+docker-compose -f staging-deployment/docker-compose-staging.yml restart user-service-staging
+
+# Actualizar servicios
+docker-compose -f staging-deployment/docker-compose-staging.yml pull
+docker-compose -f staging-deployment/docker-compose-staging.yml up -d
+
+# Limpiar recursos staging
+bash deploy-staging.sh clean
+```
+
+### 🔍 **Debugging**
+```bash
+# Entrar a un contenedor para debugging
+docker exec -it user-service-staging bash
+
+# Ver configuración de red
+docker network inspect ecommerce-staging-network
+
+# Ver uso de recursos
+docker stats --filter "name=staging"
+```
+
+---
+
+## 📈 **MÉTRICAS Y REPORTES**
+
+### 📊 **Reporte de Staging**
+
+Cada ejecución del pipeline genera un reporte comprensivo:
+
+```
+===============================================
+🏗️ REPORTE DE DESPLIEGUE STAGING
+Sistema E-commerce - Taller 2
+===============================================
+
+Fecha: [TIMESTAMP]
+Build: [BUILD_NUMBER]
+Commit: [GIT_COMMIT]
+
+📊 SERVICIOS DESPLEGADOS:
+• service-discovery
+• user-service
+• product-service
+• order-service
+• payment-service
+• shipping-service
+
+🧪 PRUEBAS EJECUTADAS:
+• Smoke Tests: EJECUTADAS ✅
+• Integration Tests: EJECUTADAS ✅
+• Performance Tests: EJECUTADAS ✅
+
+📈 MÉTRICAS DISPONIBLES:
+• staging-logs/metrics/
+• staging-logs/docker-staging.log
+
+🌐 ENDPOINTS STAGING:
+• Service Discovery: http://localhost:90061
+• User Service: http://localhost:90080
+• Product Service: http://localhost:90081
+• Order Service: http://localhost:90082
+• Payment Service: http://localhost:90083
+• Shipping Service: http://localhost:90084
+
+===============================================
+🎉 STAGING DEPLOYMENT COMPLETADO
+===============================================
+```
+
+### 📁 **Estructura de Artefactos**
+```
+staging-logs/
+├── metrics/
+│   ├── user-service-metrics.json
+│   └── user-service-health.json
+├── docker-staging.log
+└── staging-report.txt
+
+staging-deployment/
+└── docker-compose-staging.yml
+
+staging-configs/
+└── application-staging.yml
+```
+
+---
+
+## 🚨 **TROUBLESHOOTING**
+
+### ❌ **Problemas Comunes**
+
+#### **1. Servicios no inician**
+```bash
+# Verificar logs de error
+docker-compose -f staging-deployment/docker-compose-staging.yml logs
+
+# Verificar puertos en uso
+netstat -tlnp | grep 900
+
+# Reiniciar servicios
+bash deploy-staging.sh stop
+bash deploy-staging.sh deploy
+```
+
+#### **2. Pruebas fallan**
+```bash
+# Verificar conectividad
+curl -v http://localhost:90080/actuator/health
+
+# Verificar registro en Eureka
+curl http://localhost:90061/eureka/apps
+
+# Revisar configuración de red Docker
+docker network ls
+docker network inspect ecommerce-staging-network
+```
+
+#### **3. Performance insatisfactorio**
+```bash
+# Verificar recursos del contenedor
+docker stats --filter "name=staging"
+
+# Verificar logs de aplicación
+docker logs user-service-staging | grep ERROR
+
+# Ajustar configuración de memoria si es necesario
+# En docker-compose-staging.yml:
+# deploy:
+#   resources:
+#     limits:
+#       memory: 512M
+```
+
+### 🔧 **Scripts de Diagnóstico**
+```bash
+# Script de diagnóstico completo
+bash deploy-staging.sh status
+
+# Verificar salud de todos los servicios
+for port in 90061 90080 90081 90082 90083 90084; do
+  echo "Checking port $port..."
+  curl -s http://localhost:$port/actuator/health || echo "Service on port $port is down"
+done
+
+# Generar reporte de estado
+docker ps --filter "name=staging" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+```
+
+---
+
+## 🎯 **BEST PRACTICES**
+
+### ✅ **Recomendaciones**
+
+1. **🔄 Automatización**: Mantener el pipeline completamente automatizado
+2. **📊 Monitoreo**: Implementar métricas comprensivas
+3. **🧪 Testing**: Ejecutar pruebas exhaustivas en staging
+4. **📝 Documentación**: Mantener logs detallados
+5. **🔒 Security**: Validar aspectos de seguridad en staging
+6. **⚡ Performance**: Monitorear rendimiento constantemente
+7. **🚀 Rollback**: Mantener estrategia de rollback lista
+
+### 🚫 **Evitar**
+
+- ❌ **Datos de producción** en staging
+- ❌ **Configuraciones hardcodeadas**
+- ❌ **Omitir validaciones manuales críticas**
+- ❌ **Promover automáticamente sin aprobación**
+- ❌ **Ignorar warnings de performance**
+
+---
+
+## 📋 **CHECKLIST DE STAGING**
+
+### ✅ **Pre-deployment**
+- [ ] Artifacts de desarrollo disponibles
+- [ ] Ambiente staging limpio
+- [ ] Configuraciones actualizadas
+- [ ] Red Docker configurada
+
+### ✅ **Durante deployment**
+- [ ] Servicios construidos exitosamente
+- [ ] Imágenes Docker creadas
+- [ ] Contenedores iniciados
+- [ ] Healthchecks pasando
+
+### ✅ **Post-deployment**
+- [ ] Smoke tests ejecutados
+- [ ] Integration tests completados
+- [ ] Performance tests satisfactorios
+- [ ] Métricas recolectadas
+- [ ] Logs archivados
+
+### ✅ **Aprobación**
+- [ ] Validación manual completada
+- [ ] Criterios de aprobación cumplidos
+- [ ] Comentarios documentados
+- [ ] Decisión registrada
+
+---
+
+## 🔗 **INTEGRACIÓN CON PRODUCCIÓN**
+
+El staging pipeline se integra con el pipeline de producción mediante:
+
+1. **📋 Artifact Promotion**: Transferencia de artefactos validados
+2. **✅ Approval Gates**: Control de aprobación humana
+3. **📊 Metrics Handoff**: Transferencia de métricas y logs
+4. **🔄 Rollback Strategy**: Estrategia de rollback coordinada
+
+### 🚀 **Siguiente Paso: Producción**
+
+Una vez aprobado en staging, el pipeline automáticamente:
+- 🎯 Inicia pipeline de producción
+- 📋 Transfiere artefactos validados
+- 📊 Comparte métricas de staging
+- 📝 Registra aprobación y comentarios
+
+---
+
+**🎉 ¡Staging Pipeline Completado!**
+
+Has completado exitosamente el **Paso 4** del Taller 2. El ambiente staging está configurado, las pruebas están ejecutándose, y el sistema está listo para la promoción a producción.
+
+**📈 Progreso del Taller 2:**
+- ✅ Paso 1: Jenkins/Docker/Kubernetes (10%)
+- ✅ Paso 2: Dev pipelines (15%)
+- ✅ Paso 3: Testing comprensivo (30%)
+- ✅ **Paso 4: Stage pipelines (15%)** ← **¡COMPLETADO!**
+- ⏳ Paso 5: Production deployment (15%)
+- ⏳ Paso 6: Documentation (15%)
+
+**🎯 Total completado: 70%**
+
+---
+
+## 📖 **RECURSOS ADICIONALES STAGING**
+
+### 🔗 Enlaces Útiles
+- [Docker Compose Documentation](https://docs.docker.com/compose/)
+- [Spring Boot Profiles](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.profiles)
+- [Jenkins Pipeline Documentation](https://www.jenkins.io/doc/book/pipeline/)
+- [Eureka Service Discovery](https://spring.io/projects/spring-cloud-netflix)
+
+### 📚 Lecturas Recomendadas
+- "Continuous Delivery" - Jez Humble & David Farley
+- "The DevOps Handbook" - Gene Kim, Patrick Debois
+- "Infrastructure as Code" - Kief Morris
+
+---
+
+*Documento actualizado para incluir Stage Pipelines - Paso 4 del Taller 2* 

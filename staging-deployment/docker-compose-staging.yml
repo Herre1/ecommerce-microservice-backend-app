@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  service-discovery:
+    image: selimhorri/service-discovery-ecommerce-boot:0.1.0
+    container_name: staging-service-discovery
+    ports:
+      - "9061:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=staging
+    networks:
+      - ecommerce-staging-network
+    restart: unless-stopped
+
+  user-service:
+    image: selimhorri/user-service-ecommerce-boot:0.1.0
+    container_name: staging-user-service
+    ports:
+      - "9080:8080"
+    depends_on:
+      - service-discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=staging
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-discovery:8761/eureka
+    networks:
+      - ecommerce-staging-network
+    restart: unless-stopped
+
+  product-service:
+    image: selimhorri/product-service-ecommerce-boot:0.1.0
+    container_name: staging-product-service
+    ports:
+      - "9081:8081"
+    depends_on:
+      - service-discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=staging
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-discovery:8761/eureka
+    networks:
+      - ecommerce-staging-network
+    restart: unless-stopped
+
+  order-service:
+    image: selimhorri/order-service-ecommerce-boot:0.1.0
+    container_name: staging-order-service
+    ports:
+      - "9082:8082"
+    depends_on:
+      - service-discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=staging
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-discovery:8761/eureka
+    networks:
+      - ecommerce-staging-network
+    restart: unless-stopped
+
+  payment-service:
+    image: selimhorri/payment-service-ecommerce-boot:0.1.0
+    container_name: staging-payment-service
+    ports:
+      - "9083:8083"
+    depends_on:
+      - service-discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=staging
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-discovery:8761/eureka
+    networks:
+      - ecommerce-staging-network
+    restart: unless-stopped
+
+  shipping-service:
+    image: selimhorri/shipping-service-ecommerce-boot:0.1.0
+    container_name: staging-shipping-service
+    ports:
+      - "9084:8084"
+    depends_on:
+      - service-discovery
+    environment:
+      - SPRING_PROFILES_ACTIVE=staging
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-discovery:8761/eureka
+    networks:
+      - ecommerce-staging-network
+    restart: unless-stopped
+
+networks:
+  ecommerce-staging-network:
+    driver: bridge 

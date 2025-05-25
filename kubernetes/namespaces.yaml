@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ecommerce-staging
+  labels:
+    environment: staging
+    project: ecommerce-microservices
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ecommerce-master
+  labels:
+    environment: master
+    project: ecommerce-microservices 

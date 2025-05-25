@@ -1,0 +1,66 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+  namespace: ecommerce-staging
+  labels:
+    app: payment-service
+    environment: staging
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+        environment: staging
+    spec:
+      containers:
+      - name: payment-service
+        image: selimhorri/payment-service-ecommerce-boot:0.1.0
+        ports:
+        - containerPort: 8083
+          protocol: TCP
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "staging"
+        - name: EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE
+          value: "http://service-discovery-service:8761/eureka"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8083
+          initialDelaySeconds: 90
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8083
+          initialDelaySeconds: 60
+          periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service-service
+  namespace: ecommerce-staging
+  labels:
+    app: payment-service
+    environment: staging
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8083
+    targetPort: 8083
+    protocol: TCP
+  selector:
+    app: payment-service

@@ -15,7 +15,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo "Checking out code for ${SERVICE_NAME}..."
-                // En un entorno real, usarías git
                 sh 'pwd && ls -la'
             }
         }
