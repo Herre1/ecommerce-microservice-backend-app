@@ -45,7 +45,7 @@ pipeline {
             post {
                 always {
                     dir('user-service') {
-                        publishTestResults testResultsPattern: 'target/surefire-reports/*.xml'
+                        junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
                         archiveArtifacts artifacts: 'target/surefire-reports/*', allowEmptyArchive: true
                         echo "📊 Resultados de pruebas unitarias publicados"
                     }
@@ -150,7 +150,7 @@ pipeline {
             post {
                 always {
                     dir('user-service') {
-                        publishTestResults testResultsPattern: 'target/surefire-reports/*.xml'
+                        junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
                         archiveArtifacts artifacts: 'target/surefire-reports/*', allowEmptyArchive: true
                     }
                 }
@@ -208,7 +208,7 @@ pipeline {
             post {
                 always {
                     dir('user-service') {
-                        publishTestResults testResultsPattern: 'target/surefire-reports/*.xml'
+                        junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
                         archiveArtifacts artifacts: 'target/surefire-reports/*', allowEmptyArchive: true
                     }
                 }
