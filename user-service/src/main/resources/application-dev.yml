@@ -1,4 +1,3 @@
-
 server:
   port: 8700
 
@@ -29,6 +28,11 @@ spring:
   #flyway:
   #  baseline-on-migrate: true
   #  enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE:http://service-discovery-container:8761/eureka}
 
 logging:
   level:
