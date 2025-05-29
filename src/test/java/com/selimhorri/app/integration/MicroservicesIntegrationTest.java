@@ -73,12 +73,12 @@ public class MicroservicesIntegrationTest {
         // 1. Crear un usuario en User Service
         String userData = """
             {
-                "firstName": "Integration",
-                "lastName": "TestUser",
-                "email": "integration@test.com",
-                "phone": "1234567890",
+                "firstName": "Sofia",
+                "lastName": "Martinez",
+                "email": "sofia.martinez@example.com",
+                "phone": "3157894561",
                 "credential": {
-                    "username": "integrationuser",
+                    "username": "smartinez",
                     "password": "password123",
                     "roleBasedAuthority": "ROLE_USER",
                     "isEnabled": true,
@@ -128,8 +128,8 @@ public class MicroservicesIntegrationTest {
             String orderData = """
                 {
                     "orderDate": "2025-01-25",
-                    "orderDesc": "Integration test order",
-                    "orderFee": 29.99,
+                    "orderDesc": "Orden de prueba de integración - Laptop Dell",
+                    "orderFee": 2899.99,
                     "userId": 1
                 }
                 """;
@@ -161,7 +161,7 @@ public class MicroservicesIntegrationTest {
             {
                 "paymentDate": "2025-01-25",
                 "paymentMethod": "CREDIT_CARD",
-                "fee": 29.99,
+                "fee": 2899.99,
                 "isPaid": true,
                 "orderId": 1
             }

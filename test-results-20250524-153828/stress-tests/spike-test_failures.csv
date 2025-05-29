@@ -1,5 +1,0 @@
-Method,Name,Error,Occurrences
-GET,/api/users,CatchResponseError('Spike test failed: 403'),1087
-GET,/api/credentials,CatchResponseError('Spike test failed: 403'),1151
-GET,/api/users/1,CatchResponseError('Spike test failed: 403'),1120
-GET,/api/users/username/admin,CatchResponseError('Spike test failed: 403'),1073

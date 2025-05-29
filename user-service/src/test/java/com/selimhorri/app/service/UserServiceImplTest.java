@@ -46,7 +46,7 @@ class UserServiceImplTest {
         // Setup test credential
         testCredential = Credential.builder()
                 .credentialId(1)
-                .username("testuser")
+                .username("nramirez")
                 .password("password123")
                 .roleBasedAuthority(RoleBasedAuthority.ROLE_USER)
                 .isEnabled(true)
@@ -57,7 +57,7 @@ class UserServiceImplTest {
 
         testCredentialDto = CredentialDto.builder()
                 .credentialId(1)
-                .username("testuser")
+                .username("nramirez")
                 .password("password123")
                 .roleBasedAuthority(RoleBasedAuthority.ROLE_USER)
                 .isEnabled(true)
@@ -69,21 +69,21 @@ class UserServiceImplTest {
         // Setup test user
         testUser = User.builder()
                 .userId(1)
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
-                .phone("1234567890")
-                .imageUrl("http://example.com/avatar.jpg")
+                .firstName("Natalia")
+                .lastName("Ramirez")
+                .email("natalia.ramirez@example.com")
+                .phone("3001234567")
+                .imageUrl("http://example.com/natalia-avatar.jpg")
                 .credential(testCredential)
                 .build();
 
         testUserDto = UserDto.builder()
                 .userId(1)
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
-                .phone("1234567890")
-                .imageUrl("http://example.com/avatar.jpg")
+                .firstName("Natalia")
+                .lastName("Ramirez")
+                .email("natalia.ramirez@example.com")
+                .phone("3001234567")
+                .imageUrl("http://example.com/natalia-avatar.jpg")
                 .credentialDto(testCredentialDto)
                 .build();
     }
@@ -96,10 +96,10 @@ class UserServiceImplTest {
         // Given
         User user2 = User.builder()
                 .userId(2)
-                .firstName("Jane")
-                .lastName("Smith")
-                .email("jane.smith@example.com")
-                .phone("0987654321")
+                .firstName("Carlos")
+                .lastName("Mendoza")
+                .email("carlos.mendoza@example.com")
+                .phone("3109876543")
                 .credential(testCredential)
                 .build();
 
@@ -112,8 +112,8 @@ class UserServiceImplTest {
         // Then
         assertNotNull(result);
         assertEquals(2, result.size());
-        assertEquals("John", result.get(0).getFirstName());
-        assertEquals("Jane", result.get(1).getFirstName());
+        assertEquals("Natalia", result.get(0).getFirstName());
+        assertEquals("Carlos", result.get(1).getFirstName());
         verify(userRepository, times(1)).findAll();
     }
 
@@ -132,9 +132,9 @@ class UserServiceImplTest {
         // Then
         assertNotNull(result);
         assertEquals(userId, result.getUserId());
-        assertEquals("John", result.getFirstName());
-        assertEquals("Doe", result.getLastName());
-        assertEquals("john.doe@example.com", result.getEmail());
+        assertEquals("Natalia", result.getFirstName());
+        assertEquals("Ramirez", result.getLastName());
+        assertEquals("natalia.ramirez@example.com", result.getEmail());
         verify(userRepository, times(1)).findById(userId);
     }
 
@@ -170,9 +170,9 @@ class UserServiceImplTest {
 
         // Then
         assertNotNull(result);
-        assertEquals("John", result.getFirstName());
-        assertEquals("Doe", result.getLastName());
-        assertEquals("john.doe@example.com", result.getEmail());
+        assertEquals("Natalia", result.getFirstName());
+        assertEquals("Ramirez", result.getLastName());
+        assertEquals("natalia.ramirez@example.com", result.getEmail());
         verify(userRepository, times(1)).save(any(User.class));
     }
 
@@ -182,7 +182,7 @@ class UserServiceImplTest {
     @Test
     void testFindByUsername_WhenUserExists_ShouldReturnUser() {
         // Given
-        String username = "testuser";
+        String username = "nramirez";
         when(userRepository.findByCredentialUsername(username)).thenReturn(Optional.of(testUser));
 
         // When
@@ -190,8 +190,8 @@ class UserServiceImplTest {
 
         // Then
         assertNotNull(result);
-        assertEquals("John", result.getFirstName());
-        assertEquals("testuser", result.getCredentialDto().getUsername());
+        assertEquals("Natalia", result.getFirstName());
+        assertEquals("nramirez", result.getCredentialDto().getUsername());
         verify(userRepository, times(1)).findByCredentialUsername(username);
     }
 
@@ -201,7 +201,7 @@ class UserServiceImplTest {
     @Test
     void testFindByUsername_WhenUserNotExists_ShouldThrowException() {
         // Given
-        String username = "nonexistent";
+        String username = "usuarioinexistente";
         when(userRepository.findByCredentialUsername(username)).thenReturn(Optional.empty());
 
         // When & Then
@@ -210,7 +210,7 @@ class UserServiceImplTest {
                 () -> userService.findByUsername(username)
         );
 
-        assertTrue(exception.getMessage().contains("User with username: nonexistent not found"));
+        assertTrue(exception.getMessage().contains("User with username: usuarioinexistente not found"));
         verify(userRepository, times(1)).findByCredentialUsername(username);
     }
 

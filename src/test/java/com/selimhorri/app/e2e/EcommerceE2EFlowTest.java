@@ -61,13 +61,13 @@ public class EcommerceE2EFlowTest {
         // 1. Crear nuevo usuario
         String userData = String.format("""
             {
-                "firstName": "E2EUser%d",
-                "lastName": "TestLastName",
-                "email": "e2euser%d@example.com",
-                "phone": "555%07d",
-                "imageUrl": "http://example.com/avatar%d.jpg",
+                "firstName": "Alejandra",
+                "lastName": "Gutierrez",
+                "email": "alejandra.gutierrez%d@example.com",
+                "phone": "300%07d",
+                "imageUrl": "http://example.com/alejandra-avatar%d.jpg",
                 "credential": {
-                    "username": "e2euser%d",
+                    "username": "agutierrez%d",
                     "password": "securePassword123",
                     "roleBasedAuthority": "ROLE_USER",
                     "isEnabled": true,
@@ -76,7 +76,7 @@ public class EcommerceE2EFlowTest {
                     "isCredentialsNonExpired": true
                 }
             }
-            """, randomId, randomId, randomId, randomId, randomId);
+            """, randomId, randomId, randomId, randomId);
 
         HttpEntity<String> userRequest = new HttpEntity<>(userData, headers);
         ResponseEntity<Map> userResponse = restTemplate.postForEntity(
@@ -100,7 +100,7 @@ public class EcommerceE2EFlowTest {
                 
                 // 3. Verificar que las credenciales se crearon
                 ResponseEntity<Map> credentialResponse = restTemplate.getForEntity(
-                    baseUrl + "/api/credentials/username/e2euser" + randomId, Map.class);
+                    baseUrl + "/api/credentials/username/agutierrez" + randomId, Map.class);
                 
                 assertTrue(
                     credentialResponse.getStatusCode() == HttpStatus.OK ||
@@ -148,7 +148,7 @@ public class EcommerceE2EFlowTest {
         
         // 3. Simular filtros de búsqueda (si están implementados)
         ResponseEntity<String> searchResponse = restTemplate.getForEntity(
-            baseUrl + "/api/products?search=test", String.class);
+            baseUrl + "/api/products?search=laptop", String.class);
         
         // Cualquier respuesta es aceptable (404, 200, etc.)
         assertNotNull(searchResponse);
@@ -191,8 +191,8 @@ public class EcommerceE2EFlowTest {
         String orderData = String.format("""
             {
                 "orderDate": "2025-01-25",
-                "orderDesc": "E2E Test Order - Complete Shopping Flow",
-                "orderFee": 149.99,
+                "orderDesc": "E2E Test Order - MacBook Pro 16 pulgadas",
+                "orderFee": 8999.99,
                 "userId": %d
             }
             """, createdUserId);
@@ -241,7 +241,7 @@ public class EcommerceE2EFlowTest {
             {
                 "paymentDate": "2025-01-25",
                 "paymentMethod": "CREDIT_CARD",
-                "fee": 149.99,
+                "fee": 8999.99,
                 "isPaid": true,
                 "orderId": %d
             }
@@ -281,7 +281,7 @@ public class EcommerceE2EFlowTest {
             {
                 "paymentDate": "2025-01-25",
                 "paymentMethod": "PAYPAL",
-                "fee": 149.99,
+                "fee": 8999.99,
                 "isPaid": true,
                 "orderId": %d
             }
@@ -314,7 +314,7 @@ public class EcommerceE2EFlowTest {
         String shippingData = String.format("""
             {
                 "shippingDate": "2025-01-25",
-                "shippingAddress": "123 E2E Test Street, Test City, TC 12345",
+                "shippingAddress": "Carrera 15 #93-47, Apartamento 501, Bogotá, Colombia",
                 "orderId": %d
             }
             """, createdOrderId);
@@ -384,11 +384,11 @@ public class EcommerceE2EFlowTest {
             String updatedUserData = String.format("""
                 {
                     "userId": %d,
-                    "firstName": "UpdatedFirstName",
-                    "lastName": "UpdatedLastName",
-                    "email": "updated.email@example.com",
-                    "phone": "5551234567",
-                    "imageUrl": "http://example.com/updated-avatar.jpg"
+                    "firstName": "Alejandra",
+                    "lastName": "Gutierrez Morales",
+                    "email": "alejandra.gutierrez.morales@example.com",
+                    "phone": "3001234567",
+                    "imageUrl": "http://example.com/alejandra-updated-avatar.jpg"
                 }
                 """, createdUserId);
 

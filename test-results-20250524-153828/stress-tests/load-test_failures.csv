@@ -1,6 +1,0 @@
-Method,Name,Error,Occurrences
-GET,/api/credentials/username/omarderouiche,CatchResponseError('Failed to get credential by username: 403'),43
-GET,/api/credentials,CatchResponseError('Failed to get credentials: 403'),272
-GET,/api/credentials/username/amineladjimi,CatchResponseError('Failed to get credential by username: 403'),37
-GET,/api/credentials/username/selimhorri,CatchResponseError('Failed to get credential by username: 403'),54
-GET,/api/credentials/username/admin,CatchResponseError('Failed to get credential by username: 403'),42
