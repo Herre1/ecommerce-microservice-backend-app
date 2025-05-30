@@ -1,0 +1,177 @@
+version: '3'
+services:
+  # Jenkins para CI/CD
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - 8090:8080
+      - 50000:50000
+    networks:
+      - microservices_network
+    volumes:
+      - ./jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    user: root
+    restart: unless-stopped
+
+  # Servicios Core
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411
+    networks:
+      - microservices_network
+
+  service-discovery-container:
+    image: selimhorri/service-discovery-ecommerce-boot:0.1.0
+    ports:
+      - 8761:8761
+    networks:
+      - microservices_network
+    environment:
+      - SPRING_ZIPKIN_BASE-URL=http://zipkin:9411
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloud-config-container:9296/
+      - EUREKA_INSTANCE_HOSTNAME=service-discovery-container
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=false
+
+  cloud-config-container:
+    image: selimhorri/cloud-config-ecommerce-boot:0.1.0
+    ports:
+      - 9296:9296
+    networks:
+      - microservices_network
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_ZIPKIN_BASE-URL=http://zipkin:9411
+      - EUREKA_CLIENT_REGION=default
+      - EUREKA_CLIENT_AVAILABILITYZONES_DEFAULT=myzone
+      - EUREKA_CLIENT_SERVICEURL_MYZONE=http://service-discovery-container:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery-container:8761/eureka/
+      - EUREKA_INSTANCE_HOSTNAME=cloud-config-container
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=false
+
+  # Microservicios
+  api-gateway-container:
+    image: selimhorri/api-gateway-ecommerce-boot:0.1.0
+    ports:
+      - 8080:8080
+    networks:
+      - microservices_network
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_ZIPKIN_BASE-URL=http://zipkin:9411
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloud-config-container:9296/
+      - EUREKA_CLIENT_REGION=default
+      - EUREKA_CLIENT_AVAILABILITYZONES_DEFAULT=myzone
+      - EUREKA_CLIENT_SERVICEURL_MYZONE=http://service-discovery-container:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery-container:8761/eureka/
+      - EUREKA_INSTANCE_HOSTNAME=api-gateway-container
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=false
+
+  user-service-container:
+    image: selimhorri/user-service-ecommerce-boot:0.1.0
+    ports:
+      - 8700:8700
+    networks:
+      - microservices_network
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_ZIPKIN_BASE-URL=http://zipkin:9411
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloud-config-container:9296/
+      - EUREKA_CLIENT_REGION=default
+      - EUREKA_CLIENT_AVAILABILITYZONES_DEFAULT=myzone
+      - EUREKA_CLIENT_SERVICEURL_MYZONE=http://service-discovery-container:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery-container:8761/eureka/
+      - EUREKA_INSTANCE_HOSTNAME=user-service-container
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=false
+
+  product-service-container:
+    image: selimhorri/product-service-ecommerce-boot:0.1.0
+    ports:
+      - 8500:8500
+    networks:
+      - microservices_network
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_ZIPKIN_BASE-URL=http://zipkin:9411
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloud-config-container:9296/
+      - EUREKA_CLIENT_REGION=default
+      - EUREKA_CLIENT_AVAILABILITYZONES_DEFAULT=myzone
+      - EUREKA_CLIENT_SERVICEURL_MYZONE=http://service-discovery-container:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery-container:8761/eureka/
+      - EUREKA_INSTANCE_HOSTNAME=product-service-container
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=false
+
+  order-service-container:
+    image: selimhorri/order-service-ecommerce-boot:0.1.0
+    ports:
+      - 8300:8300
+    networks:
+      - microservices_network
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_ZIPKIN_BASE-URL=http://zipkin:9411
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloud-config-container:9296/
+      - EUREKA_CLIENT_REGION=default
+      - EUREKA_CLIENT_AVAILABILITYZONES_DEFAULT=myzone
+      - EUREKA_CLIENT_SERVICEURL_MYZONE=http://service-discovery-container:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery-container:8761/eureka/
+      - EUREKA_INSTANCE_HOSTNAME=order-service-container
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=false
+
+  payment-service-container:
+    image: selimhorri/payment-service-ecommerce-boot:0.1.0
+    ports:
+      - 8400:8400
+    networks:
+      - microservices_network
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_ZIPKIN_BASE-URL=http://zipkin:9411
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloud-config-container:9296/
+      - EUREKA_CLIENT_REGION=default
+      - EUREKA_CLIENT_AVAILABILITYZONES_DEFAULT=myzone
+      - EUREKA_CLIENT_SERVICEURL_MYZONE=http://service-discovery-container:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery-container:8761/eureka/
+      - EUREKA_INSTANCE_HOSTNAME=payment-service-container
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=false
+
+  shipping-service-container:
+    image: selimhorri/shipping-service-ecommerce-boot:0.1.0
+    ports:
+      - 8600:8600
+    networks:
+      - microservices_network
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_ZIPKIN_BASE-URL=http://zipkin:9411
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloud-config-container:9296/
+      - EUREKA_CLIENT_REGION=default
+      - EUREKA_CLIENT_AVAILABILITYZONES_DEFAULT=myzone
+      - EUREKA_CLIENT_SERVICEURL_MYZONE=http://service-discovery-container:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery-container:8761/eureka/
+      - EUREKA_INSTANCE_HOSTNAME=shipping-service-container
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=false
+
+  favourite-service-container:
+    image: selimhorri/favourite-service-ecommerce-boot:0.1.0
+    ports:
+      - 8800:8800
+    networks:
+      - microservices_network
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_ZIPKIN_BASE-URL=http://zipkin:9411
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloud-config-container:9296/
+      - EUREKA_CLIENT_REGION=default
+      - EUREKA_CLIENT_AVAILABILITYZONES_DEFAULT=myzone
+      - EUREKA_CLIENT_SERVICEURL_MYZONE=http://service-discovery-container:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery-container:8761/eureka/
+      - EUREKA_INSTANCE_HOSTNAME=favourite-service-container
+      - EUREKA_INSTANCE_PREFER_IP_ADDRESS=false
+
+networks:
+  microservices_network:
+    driver: bridge 
